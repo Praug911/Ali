@@ -14,6 +14,7 @@
       height: 100vh;
       margin: 0;
       text-align: center;
+      position: relative;
     }
 
     .card {
@@ -27,7 +28,7 @@
     }
 
     .card:hover {
-      background: #ff1493;
+      background: #CBC3E3;
     }
 
     .cats {
@@ -40,23 +41,164 @@
       margin: 10px;
     }
 
+    .love-message {
+      display: none;
+      font-size: 2rem;
+      color: pink;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .progress-container {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .progress-container span {
+      font-size: 1.5rem;
+      color: #2F4F4F;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 15px;
+      height: 20px;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0;
+      background-color: #90EE90;
+      border-radius: 15px;
+    }
+
+    .question-container {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .question-container button {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .question-container button:hover {
+      background-color: #45a049;
+    }
+
   </style>
+  <!-- Add canvas-confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
   <div class="card" onclick="showCats()">
-    Click me if Ali lob Praug!
+    Click me Ali lob Praug !
     <div class="cats">
-      <img src="https://i.ytimg.com/vi/vH8kYVahdrU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&amp;rs=AOn4CLDupXZrUT00Q1ru06NV2vi3rMfp0w" jsaction="" class=" alt="Cute Cat 1">
-      <img src="https://i.redd.it/po9diavzbsxc1.png" jsaction="" class=" class=" alt="Cute Cat 2">
-      <img src="https://i.pinimg.com/736x/d1/e0/fa/d1e0fa6b8e897927ffb224fae68a61a7.jpg" jsaction="" class=" alt="Cute Cat 3">
+      <img src="https://i.ytimg.com/vi/vH8kYVahdrU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&amp;rs=AOn4CLDupXZrUT00Q1ru06NV2vi3rMfp0w" alt="Cute Cat 1">
+      <img src="https://i.redd.it/po9diavzbsxc1.png" alt="Cute Cat 2">
+      <img src="https://i.pinimg.com/736x/d1/e0/fa/d1e0fa6b8e897927ffb224fae68a61a7.jpg" alt="Cute Cat 3">
+    </div>
+    <div class="love-message">
+      HMMMMMM 
+    </div>
+    <!-- Progress bar container -->
+    <div class="progress-container">
+      <span style="color: black;">PRAUG LOBS U TOO </span>
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+    </div>
+    <!-- Question Container -->
+    <div class="question-container">
+      <span> DOES ALI LOBS PRAUG?</span>
+      <div>
+        <button onclick="handleAnswer(true)">YES</button>
+        <button onclick="handleAnswer(false)">NO</button>
+      </div>
     </div>
   </div>
 
   <script>
     function showCats() {
       const cats = document.querySelector('.cats');
-      cats.style.display = 'block'; // Show cats when clicked
+      const loveMessage = document.querySelector('.love-message');
+      const progressContainer = document.querySelector('.progress-container');
+      const progress = document.querySelector('.progress');
+      const questionContainer = document.querySelector('.question-container');
+      
+      // Show cats when clicked
+      cats.style.display = 'block';
+      
+      // Trigger confetti effect
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0.5, y: 0.5 }
+      });
+
+      // Show "I LOB U" message after a delay
+      setTimeout(function() {
+        loveMessage.style.display = 'block';
+      }, 1500); // Delay for 1.5 seconds before showing "I LOB U"
+      
+      // Show progress bar and start filling it up
+      setTimeout(function() {
+        progressContainer.style.display = 'block';
+        let width = 0;
+        const interval = setInterval(function() {
+          if (width >= 100) {
+            clearInterval(interval);
+            confetti({
+              particleCount: 150,
+              spread: 90,
+              origin: { x: 0.5, y: 0.5 }
+            });
+            questionContainer.style.display = 'block'; // Show the question after progress bar is full
+          } else {
+            width++;
+            progress.style.width = width + '%'; // Increase the width of the progress bar
+          }
+        }, 50); // Speed of the progress bar
+      }, 3000); // Wait for 3 seconds before showing the progress bar
+    }
+
+    function handleAnswer(answer) {
+      const questionContainer = document.querySelector('.question-container');
+      
+      if (answer) {
+        // If YES, spam "Ali lob Praug" across the page one-by-one in random positions
+        for (let i = 0; i < 50; i++) {
+          setTimeout(function() {
+            const text = document.createElement('div');
+            text.textContent = "Ali lob Praug!";
+            text.style.position = 'absolute';
+            text.style.top = `${Math.random() * 100}vh`;
+            text.style.left = `${Math.random() * 100}vw`;
+            text.style.fontSize = '2rem';
+            text.style.color = 'black';
+            text.style.fontWeight = 'bold';
+            document.body.appendChild(text);
+          }, i * 100); // Delay each "Ali lob Praug!" slightly
+        }
+        // Trigger additional confetti after the response
+        confetti({
+          particleCount: 200,
+          spread: 90,
+          origin: { x: 0.5, y: 0.5 }
+        });
+      } else {
+        // If NO, just hide the question
+        questionContainer.style.display = 'none';
+      }
     }
   </script>
 
